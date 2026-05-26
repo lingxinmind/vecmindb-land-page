@@ -242,7 +242,7 @@ const trackEvent = (eventName, params = {}) => {
         if (navigator.sendBeacon && APP_CONFIG.IS_PROD) {
             navigator.sendBeacon('/api/telemetry', JSON.stringify(payload));
         }
-    } catch (e) { /* silent */ }
+    } catch { /* silent */ }
 };
 
 // 3. CTA 点击追踪
