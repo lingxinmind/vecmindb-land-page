@@ -535,3 +535,35 @@ footer {
 .float-anim {
     animation: float 6s ease-in-out infinite;
 }
+
+/* Code File Tab selector in terminal header */
+.code-file-selector {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.file-tab {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    opacity: 0.6;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.file-tab:hover {
+    color: var(--text-primary);
+    opacity: 0.9;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.file-tab.active {
+    color: var(--accent-secondary);
+    opacity: 1;
+    background: rgba(6, 182, 212, 0.1);
+    font-weight: 600;
+}

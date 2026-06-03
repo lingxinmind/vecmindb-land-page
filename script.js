@@ -34,6 +34,8 @@ const translations = {
         'qs-note': '你从未碰过 embedding 模型——VecminDB 内置处理了。你从未写一行蒸馏代码——引擎在后台自动运行。',
         'qs-tab-mcp': '单机离线 MCP',
         'qs-tab-cluster': '30秒集群启动',
+        'code-cluster-yaml-comment-1': '# docker-compose.yml',
+        'code-cluster-yaml-comment-2': '# 一键拉起 3 节点 Raft 强一致性分布式集群',
         'code-cluster-comment-1': '# 1. 一键拉起 3 节点 Raft 强一致性分布式集群（自带 30s 极速自愈）',
         'code-cluster-comment-2': '# 2. 集群启动自动探测硬件并自动调优，检查集群拓扑健康状态',
         'code-cluster-comment-3': '# 3. 分布式多节点高并发存入记忆，数据根据分区哈希路由与重平衡',
@@ -102,6 +104,8 @@ const translations = {
         'qs-note': 'You never touched an embedding model — VecminDB handles it. You never wrote distillation code — the engine runs it in the background.',
         'qs-tab-mcp': 'Standalone MCP',
         'qs-tab-cluster': '30s Cluster Bootstrap',
+        'code-cluster-yaml-comment-1': '# docker-compose.yml',
+        'code-cluster-yaml-comment-2': '# One-click spin up a 3-node Raft highly-consistent distributed cluster',
         'code-cluster-comment-1': '# 1. Launch a 3-node Raft highly-consistent distributed cluster (with 30s self-healing)',
         'code-cluster-comment-2': '# 2. Auto hardware probe & tune, verify cluster topology and health status',
         'code-cluster-comment-3': '# 3. Concurrent multi-node memory ingestion, auto sharding & rebalance',
@@ -142,371 +146,736 @@ const translations = {
     }
 };
 
-let currentLang = 'zh';
-
-const APP_CONFIG = {
-    IS_PROD: false, // 预留生产模式开关，可一键切换至真实后端API
-    VERSION: '1.5.0'
-};
-
-const setLanguage = (lang) => {
-    currentLang = lang;
-    // W3C 辅助功能对齐：同步更新 HTML 语言属性
-    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en-US';
-    
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (translations[lang][key]) {
-            if (el.tagName === 'INPUT') {
-                el.placeholder = translations[lang][key];
-            } else {
-                el.innerHTML = translations[lang][key];
-            }
-        }
-    });
-    document.documentElement.lang = lang;
-};
-
-// 1. Canvas 算力神经网背景实现
-const initNexusEffect = () => {
-    const container = document.getElementById('canvas-container');
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    container.appendChild(canvas);
-
-    let dots = [];
-    const DOT_COUNT = 80;
-    const CONNECTION_DIST = 150;
-
-    const resize = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    };
-
-    class Dot {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.radius = Math.random() * 2;
-        }
-
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-
-            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(59, 130, 246, 0.5)';
-            ctx.fill();
-        }
-    }
-
-    const animate = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        dots.forEach(dot => {
-            dot.update();
-            dot.draw();
-        });
-
-        for (let i = 0; i < dots.length; i++) {
-            for (let j = i + 1; j < dots.length; j++) {
-                const dx = dots[i].x - dots[j].x;
-                const dy = dots[i].y - dots[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < CONNECTION_DIST) {
-                    ctx.beginPath();
-                    ctx.moveTo(dots[i].x, dots[i].y);
-                    ctx.lineTo(dots[j].x, dots[j].y);
-                    ctx.strokeStyle = `rgba(59, 130, 246, ${1 - dist / CONNECTION_DIST - 0.5})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.stroke();
-                }
-            }
-        }
-        requestAnimationFrame(animate);
-    };
-
-    window.addEventListener('resize', resize);
-    resize();
-    for (let i = 0; i < DOT_COUNT; i++) dots.push(new Dot());
-    animate();
-};
-
-// 2. 商业洞察追踪引擎 (Telemetry Engine)
-const trackEvent = (eventName, params = {}) => {
-    const payload = {
-        event: eventName,
-        timestamp: new Date().toISOString(),
-        language: typeof currentLang !== 'undefined' ? currentLang : 'zh',
-        params: params,
-        session: window.sessionStorage.getItem('lx_sid') || 'anon'
-    };
-    console.log(`[Lingxin-Analytics] Event: ${eventName}`, payload);
-    // 生产模式下通过 sendBeacon 异步上报
-    try {
-        if (navigator.sendBeacon && APP_CONFIG.IS_PROD) {
-            navigator.sendBeacon('/api/telemetry', JSON.stringify(payload));
-        }
-    } catch { /* silent */ }
-};
-
-// 3. CTA 点击追踪
-const initCTATracking = () => {
-    document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const text = btn.textContent?.trim() || 'unknown';
-            trackEvent('CTA_Click', { button: text });
-        });
-    });
-};
-
-// 3. 平滑滚动增强
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetEl = document.querySelector(targetId);
-        
-        if (targetEl) {
-            // 移动端菜单自动收起
-            const mainNav = document.getElementById('mainNav');
-            const menuBtn = document.getElementById('menuBtn');
-            if (mainNav && mainNav.classList.contains('active')) {
-                mainNav.classList.remove('active');
-                if (menuBtn) menuBtn.classList.remove('active');
-            }
-
-            targetEl.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// 4. 滚动感应入场动画 (Intersection Observer)
-const initScrollReveal = () => {
-    const observerOptions = {
-        threshold: 0.15,
-        rootMargin: "0px 0px -50px 0px"
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    const revealElements = document.querySelectorAll('.reveal');
-    revealElements.forEach(el => observer.observe(el));
-};
-
-// 5. 向量空间智算可视化实现
-const initVectorViz = () => {
-    const canvas = document.getElementById('vizCanvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    
-    let width, height;
-    let particles = [];
-    let clusters = [];
-    const PARTICLE_COUNT = 150;
-    const CLUSTER_COUNT = 4;
-
-    const resize = () => {
-        const container = canvas.parentElement;
-        width = canvas.width = container.offsetWidth;
-        height = canvas.height = container.offsetHeight;
-    };
-
-    class Cluster {
-        constructor() {
-            this.reset();
-        }
-        reset() {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.targetX = Math.random() * width;
-            this.targetY = Math.random() * height;
-            this.strength = 1.5 + Math.random() * 2;
-        }
-        update() {
-            this.x += (this.targetX - this.x) * 0.01;
-            this.y += (this.targetY - this.y) * 0.01;
-            if (Math.abs(this.x - this.targetX) < 10) this.reset();
-        }
-    }
-
-    class Particle {
-        constructor() {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 2;
-            this.vy = (Math.random() - 0.5) * 2;
-            this.cluster = Math.floor(Math.random() * CLUSTER_COUNT);
-        }
-        update() {
-            const c = clusters[this.cluster];
-            // 受聚类中心吸引力影响
-            const dx = c.x - this.x;
-            const dy = c.y - this.y;
-            this.vx += dx * 0.0005;
-            this.vy += dy * 0.0005;
-            
-            this.vx *= 0.95; // 阻尼
-            this.vy *= 0.95;
-            
-            this.x += this.vx;
-            this.y += this.vy;
-        }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, 1.2, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-            ctx.fill();
-            
-            // 语义动效增强：随机呈现“记忆节点”
-            if (Math.random() > 0.99) {
-                ctx.font = '8px monospace';
-                ctx.fillStyle = 'var(--accent-secondary)';
-                ctx.fillText('MEMORY_NODE', this.x + 5, this.y);
-            }
-        }
-    }
-
-    const animate = () => {
-        ctx.clearRect(0, 0, width, height);
-
-        clusters.forEach(c => c.update());
-        
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-            const c = clusters[p.cluster];
-            const dist = Math.sqrt((c.x - p.x)**2 + (c.y - p.y)**2);
-            if (dist < 150) {
-                ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
-                ctx.lineTo(c.x, c.y);
-                ctx.strokeStyle = `rgba(59, 130, 246, ${1 - dist/150 - 0.6})`;
-                ctx.stroke();
-            }
-        });
-
-        // 模拟实时写入脉冲 (10B Scale Ingestion)
-        if (Math.random() > 0.9) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-            const streamY = Math.random() * height;
-            ctx.fillRect(0, streamY, width, 1);
-        }
-
-        requestAnimationFrame(animate);
-    };
-
-    window.addEventListener('resize', resize);
-    resize();
-    for (let i = 0; i < CLUSTER_COUNT; i++) clusters.push(new Cluster());
-    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
-    animate();
-};
-
-// 初始化启动
-document.addEventListener('DOMContentLoaded', () => {
-    initNexusEffect();
-    initCTATracking();
-    initScrollReveal();
-    initVectorViz();
-
-    if (!window.sessionStorage.getItem('lx_sid')) {
-        window.sessionStorage.setItem('lx_sid', Math.random().toString(36).substring(7));
-    }
-
-    // 语言切换功能激活
-    const langBtn = document.getElementById('langBtn');
-    
-    // 初始化时检测浏览器语言或默认语言
-    const initLang = (navigator.language || navigator.userLanguage).startsWith('zh') ? 'zh' : 'en';
-    if (initLang === 'en') {
-        setLanguage('en');
-        if (langBtn) langBtn.innerText = '中文';
-    } else {
-        setLanguage('zh');
-        if (langBtn) langBtn.innerText = 'EN';
-    }
-
-    if (langBtn) {
-        langBtn.addEventListener('click', () => {
-            const nextLang = currentLang === 'zh' ? 'en' : 'zh';
-            setLanguage(nextLang);
-            langBtn.innerText = nextLang === 'zh' ? 'EN' : '中文';
-            trackEvent('Language_Switch', { to: nextLang });
-        });
-    }
-
-    // 移动端菜单控制
-    const menuBtn = document.getElementById('menuBtn');
-    const mainNav = document.getElementById('mainNav');
-    if (menuBtn && mainNav) {
-        menuBtn.addEventListener('click', () => {
-            mainNav.classList.toggle('active');
-            menuBtn.classList.toggle('active');
-            trackEvent('Mobile_Menu_Toggle');
-        });
-    }
-
-    // 主题切换
-    const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-            const nextTheme = isDark ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', nextTheme);
-            themeToggle.innerText = isDark ? '☀️' : '🌓';
-            trackEvent('Theme_Switch', { mode: nextTheme });
-        });
-    }
-
-    // 渐显入场动画
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 1s ease-in';
-        document.body.style.opacity = '1';
-
-        // 移除加载层
-        const loader = document.getElementById('loader-overlay');
-        if (loader) {
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => loader.remove(), 800);
-            }, 400);
-        }
-    }, 100);
-
-    // 性能心跳记录 (Telemetry)
-    if (window.performance) {
-        window.addEventListener('load', () => {
-            const entries = window.performance.getEntriesByType('navigation');
-            const timing = entries[0];
-            if (timing) {
-                console.log(`[Lingxin-Telemetry] Core Loaded in ${timing.duration.toFixed(2)}ms`);
-                trackEvent('Page_View', {
-                    referrer: document.referrer,
-                    loadTime: timing.duration
-                });
-            }
-        });
-    }
+let currentLang = 'zh';
+
+
+
+const APP_CONFIG = {
+
+    IS_PROD: false, // 预留生产模式开关，可一键切换至真实后端API
+
+    VERSION: '1.5.0'
+
+};
+
+
+
+const setLanguage = (lang) => {
+
+    currentLang = lang;
+
+    // W3C 辅助功能对齐：同步更新 HTML 语言属性
+
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en-US';
+
+    
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+
+        const key = el.getAttribute('data-i18n');
+
+        if (translations[lang][key]) {
+
+            if (el.tagName === 'INPUT') {
+
+                el.placeholder = translations[lang][key];
+
+            } else {
+
+                el.innerHTML = translations[lang][key];
+
+            }
+
+        }
+
+    });
+
+    document.documentElement.lang = lang;
+
+};
+
+
+
+// 1. Canvas 算力神经网背景实现
+
+const initNexusEffect = () => {
+
+    const container = document.getElementById('canvas-container');
+
+    const canvas = document.createElement('canvas');
+
+    const ctx = canvas.getContext('2d');
+
+    container.appendChild(canvas);
+
+
+
+    let dots = [];
+
+    const DOT_COUNT = 80;
+
+    const CONNECTION_DIST = 150;
+
+
+
+    const resize = () => {
+
+        canvas.width = window.innerWidth;
+
+        canvas.height = window.innerHeight;
+
+    };
+
+
+
+    class Dot {
+
+        constructor() {
+
+            this.x = Math.random() * canvas.width;
+
+            this.y = Math.random() * canvas.height;
+
+            this.vx = (Math.random() - 0.5) * 0.5;
+
+            this.vy = (Math.random() - 0.5) * 0.5;
+
+            this.radius = Math.random() * 2;
+
+        }
+
+
+
+        update() {
+
+            this.x += this.vx;
+
+            this.y += this.vy;
+
+
+
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+        }
+
+
+
+        draw() {
+
+            ctx.beginPath();
+
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+
+            ctx.fillStyle = 'rgba(59, 130, 246, 0.5)';
+
+            ctx.fill();
+
+        }
+
+    }
+
+
+
+    const animate = () => {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        
+
+        dots.forEach(dot => {
+
+            dot.update();
+
+            dot.draw();
+
+        });
+
+
+
+        for (let i = 0; i < dots.length; i++) {
+
+            for (let j = i + 1; j < dots.length; j++) {
+
+                const dx = dots[i].x - dots[j].x;
+
+                const dy = dots[i].y - dots[j].y;
+
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+
+
+                if (dist < CONNECTION_DIST) {
+
+                    ctx.beginPath();
+
+                    ctx.moveTo(dots[i].x, dots[i].y);
+
+                    ctx.lineTo(dots[j].x, dots[j].y);
+
+                    ctx.strokeStyle = `rgba(59, 130, 246, ${1 - dist / CONNECTION_DIST - 0.5})`;
+
+                    ctx.lineWidth = 0.5;
+
+                    ctx.stroke();
+
+                }
+
+            }
+
+        }
+
+        requestAnimationFrame(animate);
+
+    };
+
+
+
+    window.addEventListener('resize', resize);
+
+    resize();
+
+    for (let i = 0; i < DOT_COUNT; i++) dots.push(new Dot());
+
+    animate();
+
+};
+
+
+
+// 2. 商业洞察追踪引擎 (Telemetry Engine)
+
+const trackEvent = (eventName, params = {}) => {
+
+    const payload = {
+
+        event: eventName,
+
+        timestamp: new Date().toISOString(),
+
+        language: typeof currentLang !== 'undefined' ? currentLang : 'zh',
+
+        params: params,
+
+        session: window.sessionStorage.getItem('lx_sid') || 'anon'
+
+    };
+
+    console.log(`[Lingxin-Analytics] Event: ${eventName}`, payload);
+
+    // 生产模式下通过 sendBeacon 异步上报
+
+    try {
+
+        if (navigator.sendBeacon && APP_CONFIG.IS_PROD) {
+
+            navigator.sendBeacon('/api/telemetry', JSON.stringify(payload));
+
+        }
+
+    } catch { /* silent */ }
+
+};
+
+
+
+// 3. CTA 点击追踪
+
+const initCTATracking = () => {
+
+    document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+
+        btn.addEventListener('click', () => {
+
+            const text = btn.textContent?.trim() || 'unknown';
+
+            trackEvent('CTA_Click', { button: text });
+
+        });
+
+    });
+
+};
+
+
+
+// 3. 平滑滚动增强
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+
+    anchor.addEventListener('click', function (e) {
+
+        e.preventDefault();
+
+        const targetId = this.getAttribute('href');
+
+        const targetEl = document.querySelector(targetId);
+
+        
+
+        if (targetEl) {
+
+            // 移动端菜单自动收起
+
+            const mainNav = document.getElementById('mainNav');
+
+            const menuBtn = document.getElementById('menuBtn');
+
+            if (mainNav && mainNav.classList.contains('active')) {
+
+                mainNav.classList.remove('active');
+
+                if (menuBtn) menuBtn.classList.remove('active');
+
+            }
+
+
+
+            targetEl.scrollIntoView({
+
+                behavior: 'smooth'
+
+            });
+
+        }
+
+    });
+
+});
+
+
+
+// 4. 滚动感应入场动画 (Intersection Observer)
+
+const initScrollReveal = () => {
+
+    const observerOptions = {
+
+        threshold: 0.15,
+
+        rootMargin: "0px 0px -50px 0px"
+
+    };
+
+
+
+    const observer = new IntersectionObserver((entries) => {
+
+        entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+
+                entry.target.classList.add('active');
+
+                observer.unobserve(entry.target);
+
+            }
+
+        });
+
+    }, observerOptions);
+
+
+
+    const revealElements = document.querySelectorAll('.reveal');
+
+    revealElements.forEach(el => observer.observe(el));
+
+};
+
+
+
+// 5. 向量空间智算可视化实现
+
+const initVectorViz = () => {
+
+    const canvas = document.getElementById('vizCanvas');
+
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+
+    
+
+    let width, height;
+
+    let particles = [];
+
+    let clusters = [];
+
+    const PARTICLE_COUNT = 150;
+
+    const CLUSTER_COUNT = 4;
+
+
+
+    const resize = () => {
+
+        const container = canvas.parentElement;
+
+        width = canvas.width = container.offsetWidth;
+
+        height = canvas.height = container.offsetHeight;
+
+    };
+
+
+
+    class Cluster {
+
+        constructor() {
+
+            this.reset();
+
+        }
+
+        reset() {
+
+            this.x = Math.random() * width;
+
+            this.y = Math.random() * height;
+
+            this.targetX = Math.random() * width;
+
+            this.targetY = Math.random() * height;
+
+            this.strength = 1.5 + Math.random() * 2;
+
+        }
+
+        update() {
+
+            this.x += (this.targetX - this.x) * 0.01;
+
+            this.y += (this.targetY - this.y) * 0.01;
+
+            if (Math.abs(this.x - this.targetX) < 10) this.reset();
+
+        }
+
+    }
+
+
+
+    class Particle {
+
+        constructor() {
+
+            this.x = Math.random() * width;
+
+            this.y = Math.random() * height;
+
+            this.vx = (Math.random() - 0.5) * 2;
+
+            this.vy = (Math.random() - 0.5) * 2;
+
+            this.cluster = Math.floor(Math.random() * CLUSTER_COUNT);
+
+        }
+
+        update() {
+
+            const c = clusters[this.cluster];
+
+            // 受聚类中心吸引力影响
+
+            const dx = c.x - this.x;
+
+            const dy = c.y - this.y;
+
+            this.vx += dx * 0.0005;
+
+            this.vy += dy * 0.0005;
+
+            
+
+            this.vx *= 0.95; // 阻尼
+
+            this.vy *= 0.95;
+
+            
+
+            this.x += this.vx;
+
+            this.y += this.vy;
+
+        }
+
+        draw() {
+
+            ctx.beginPath();
+
+            ctx.arc(this.x, this.y, 1.2, 0, Math.PI * 2);
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+
+            ctx.fill();
+
+            
+
+            // 语义动效增强：随机呈现“记忆节点”
+
+            if (Math.random() > 0.99) {
+
+                ctx.font = '8px monospace';
+
+                ctx.fillStyle = 'var(--accent-secondary)';
+
+                ctx.fillText('MEMORY_NODE', this.x + 5, this.y);
+
+            }
+
+        }
+
+    }
+
+
+
+    const animate = () => {
+
+        ctx.clearRect(0, 0, width, height);
+
+
+
+        clusters.forEach(c => c.update());
+
+        
+
+        particles.forEach(p => {
+
+            p.update();
+
+            p.draw();
+
+            const c = clusters[p.cluster];
+
+            const dist = Math.sqrt((c.x - p.x)**2 + (c.y - p.y)**2);
+
+            if (dist < 150) {
+
+                ctx.beginPath();
+
+                ctx.moveTo(p.x, p.y);
+
+                ctx.lineTo(c.x, c.y);
+
+                ctx.strokeStyle = `rgba(59, 130, 246, ${1 - dist/150 - 0.6})`;
+
+                ctx.stroke();
+
+            }
+
+        });
+
+
+
+        // 模拟实时写入脉冲 (10B Scale Ingestion)
+
+        if (Math.random() > 0.9) {
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+
+            const streamY = Math.random() * height;
+
+            ctx.fillRect(0, streamY, width, 1);
+
+        }
+
+
+
+        requestAnimationFrame(animate);
+
+    };
+
+
+
+    window.addEventListener('resize', resize);
+
+    resize();
+
+    for (let i = 0; i < CLUSTER_COUNT; i++) clusters.push(new Cluster());
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+    animate();
+
+};
+
+
+
+// 初始化启动
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    initNexusEffect();
+
+    initCTATracking();
+
+    initScrollReveal();
+
+    initVectorViz();
+
+
+
+    if (!window.sessionStorage.getItem('lx_sid')) {
+
+        window.sessionStorage.setItem('lx_sid', Math.random().toString(36).substring(7));
+
+    }
+
+
+
+    // 语言切换功能激活
+
+    const langBtn = document.getElementById('langBtn');
+
+    
+
+    // 初始化时检测浏览器语言或默认语言
+
+    const initLang = (navigator.language || navigator.userLanguage).startsWith('zh') ? 'zh' : 'en';
+
+    if (initLang === 'en') {
+
+        setLanguage('en');
+
+        if (langBtn) langBtn.innerText = '中文';
+
+    } else {
+
+        setLanguage('zh');
+
+        if (langBtn) langBtn.innerText = 'EN';
+
+    }
+
+
+
+    if (langBtn) {
+
+        langBtn.addEventListener('click', () => {
+
+            const nextLang = currentLang === 'zh' ? 'en' : 'zh';
+
+            setLanguage(nextLang);
+
+            langBtn.innerText = nextLang === 'zh' ? 'EN' : '中文';
+
+            trackEvent('Language_Switch', { to: nextLang });
+
+        });
+
+    }
+
+
+
+    // 移动端菜单控制
+
+    const menuBtn = document.getElementById('menuBtn');
+
+    const mainNav = document.getElementById('mainNav');
+
+    if (menuBtn && mainNav) {
+
+        menuBtn.addEventListener('click', () => {
+
+            mainNav.classList.toggle('active');
+
+            menuBtn.classList.toggle('active');
+
+            trackEvent('Mobile_Menu_Toggle');
+
+        });
+
+    }
+
+
+
+    // 主题切换
+
+    const themeToggle = document.getElementById('themeToggle');
+
+    if (themeToggle) {
+
+        themeToggle.addEventListener('click', () => {
+
+            const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+
+            const nextTheme = isDark ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', nextTheme);
+
+            themeToggle.innerText = isDark ? '☀️' : '🌓';
+
+            trackEvent('Theme_Switch', { mode: nextTheme });
+
+        });
+
+    }
+
+
+
+    // 渐显入场动画
+
+    document.body.style.opacity = '0';
+
+    setTimeout(() => {
+
+        document.body.style.transition = 'opacity 1s ease-in';
+
+        document.body.style.opacity = '1';
+
+
+
+        // 移除加载层
+
+        const loader = document.getElementById('loader-overlay');
+
+        if (loader) {
+
+            setTimeout(() => {
+
+                loader.style.opacity = '0';
+
+                setTimeout(() => loader.remove(), 800);
+
+            }, 400);
+
+        }
+
+    }, 100);
+
+
+
+    // 性能心跳记录 (Telemetry)
+
+    if (window.performance) {
+
+        window.addEventListener('load', () => {
+
+            const entries = window.performance.getEntriesByType('navigation');
+
+            const timing = entries[0];
+
+            if (timing) {
+
+                console.log(`[Lingxin-Telemetry] Core Loaded in ${timing.duration.toFixed(2)}ms`);
+
+                trackEvent('Page_View', {
+
+                    referrer: document.referrer,
+
+                    loadTime: timing.duration
+
+                });
+
+            }
+
+        });
+
+    }
+
 });
 
 // [PRODUCTION-GRADE]: Swaps the active view and button style in the Quick Start area
@@ -530,4 +899,31 @@ window.switchTab = (tabName) => {
     if (clickedBtn) {
         clickedBtn.classList.add('active');
     }
-};
+};
+
+// Swaps the active file view inside the cluster terminal container
+window.switchClusterFile = (fileType) => {
+    const yamlView = document.getElementById('cluster-yaml');
+    const shellView = document.getElementById('cluster-shell');
+    if (yamlView && shellView) {
+        if (fileType === 'yaml') {
+            yamlView.style.display = 'block';
+            shellView.style.display = 'none';
+        } else {
+            yamlView.style.display = 'none';
+            shellView.style.display = 'block';
+        }
+    }
+    const yamlTab = document.getElementById('file-tab-yaml');
+    const shellTab = document.getElementById('file-tab-shell');
+    if (yamlTab && shellTab) {
+        if (fileType === 'yaml') {
+            yamlTab.classList.add('active');
+            shellTab.classList.remove('active');
+        } else {
+            yamlTab.classList.remove('active');
+            shellTab.classList.add('active');
+        }
+    }
+};
+
