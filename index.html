@@ -247,10 +247,10 @@
                 <pre><span class="cm" data-i18n="code-comment-1"># 1. 启动 VecminDB（零外部依赖）</span>
 
 <span class="cm" data-i18n="code-comment-1-1"># 官方 GitHub GHCR 源 (海外直连推荐):</span>
-docker run -d --name vecmindb -p 5520:5520 ghcr.io/slqyahoo123/vecmindb:latest
+docker run -d --name vecmindb -p 5520:5520 -v vecmindb-data:/home/vecminDB/data -e VECMIN__SECURITY__ADMIN_KEY=my-secret-key ghcr.io/slqyahoo123/vecmindb:latest
 
 <span class="cm" data-i18n="code-comment-1-2"># 备选：国内阿里云极速专线 (中国大陆开发者推荐，免翻墙秒级下载):</span>
-# docker run -d --name vecmindb -p 5520:5520 crpi-ngtfnt7d3tsnwk7l.cn-shanghai.personal.cr.aliyuncs.com/vecmindb/vecmindb:latest
+# docker run -d --name vecmindb -p 5520:5520 -v vecmindb-data:/home/vecminDB/data -e VECMIN__SECURITY__ADMIN_KEY=my-secret-key crpi-ngtfnt7d3tsnwk7l.cn-shanghai.personal.cr.aliyuncs.com/vecmindb/vecmindb:latest
 
 
 
@@ -296,13 +296,21 @@ curl -X POST http://localhost:5520/api/v1/mcp/message \
   <span class="t">node1</span>:
     <span class="kw">image</span>: <span class="s">ghcr.io/slqyahoo123/vecmindb:latest</span>
     <span class="kw">ports</span>: [<span class="s">"5520:5520"</span>]
+    <span class="kw">volumes</span>: [<span class="s">"vecmin-data1:/home/vecminDB/data"</span>]
     <span class="kw">command</span>: [<span class="s">"--node-id"</span>, <span class="s">"1"</span>, <span class="s">"--raft-addr"</span>, <span class="s">"node1:6001"</span>, <span class="s">"--peers"</span>, <span class="s">"node1:6001,node2:6002,node3:6003"</span>]
   <span class="t">node2</span>:
     <span class="kw">image</span>: <span class="s">ghcr.io/slqyahoo123/vecmindb:latest</span>
+    <span class="kw">volumes</span>: [<span class="s">"vecmin-data2:/home/vecminDB/data"</span>]
     <span class="kw">command</span>: [<span class="s">"--node-id"</span>, <span class="s">"2"</span>, <span class="s">"--raft-addr"</span>, <span class="s">"node2:6002"</span>, <span class="s">"--peers"</span>, <span class="s">"node1:6001,node2:6002,node3:6003"</span>]
   <span class="t">node3</span>:
     <span class="kw">image</span>: <span class="s">ghcr.io/slqyahoo123/vecmindb:latest</span>
-    <span class="kw">command</span>: [<span class="s">"--node-id"</span>, <span class="s">"3"</span>, <span class="s">"--raft-addr"</span>, <span class="s">"node3:6003"</span>, <span class="s">"--peers"</span>, <span class="s">"node1:6001,node2:6002,node3:6003"</span>]</pre>
+    <span class="kw">volumes</span>: [<span class="s">"vecmin-data3:/home/vecminDB/data"</span>]
+    <span class="kw">command</span>: [<span class="s">"--node-id"</span>, <span class="s">"3"</span>, <span class="s">"--raft-addr"</span>, <span class="s">"node3:6003"</span>, <span class="s">"--peers"</span>, <span class="s">"node1:6001,node2:6002,node3:6003"</span>]
+
+<span class="kw">volumes</span>:
+  <span class="t">vecmin-data1</span>:
+  <span class="t">vecmin-data2</span>:
+  <span class="t">vecmin-data3</span>:</pre>
                 
                 <!-- bootstrap.sh execution view -->
                 <pre id="cluster-shell" style="padding: 1.5rem; margin: 0; display: none; overflow-x: auto; font-size: 0.85rem; line-height: 1.7; font-family: 'JetBrains Mono', 'Fira Code', monospace; color: #e4e4e7;"><span class="cm" data-i18n="code-cluster-comment-1"># 1. 一键拉起 3 节点 Raft 强一致性分布式集群（自带 30s 极速自愈）</span>
@@ -314,7 +322,10 @@ curl http://localhost:5520/api/v1/cluster/topology
 <span class="cm" data-i18n="code-cluster-comment-3"># 3. 分布式多节点高并发存入记忆，数据根据分区哈希路由与重平衡</span>
 curl -X POST http://localhost:5520/api/v1/mcp/message \
   -H <span class="s">"Content-Type: application/json"</span> \
-  -d <span class="s">'{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"store_memory","arguments":{"text":"Internal Audit Secured","agent_id":"cluster"}}}'</span></pre>
+  -d <span class="s">'{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"store_memory","arguments":{"text":"Internal Audit Secured","agent_id":"cluster"}}}'</span>
+
+<span class="cm" data-i18n="code-cluster-comment-4"># 4. 无损平滑升级集群 (Raft 数据卷自动保留):</span>
+docker compose down && docker compose pull && docker compose up -d</pre>
             </div>
 
             <p style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-size: 0.85rem;" data-i18n="qs-note">你从未碰过 embedding 模型——VecminDB 内置处理了。你从未写一行蒸馏代码——引擎在后台自动运行。</p>
