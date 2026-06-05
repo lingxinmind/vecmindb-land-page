@@ -82,6 +82,9 @@ const translations = {
         'qs-download-title': '下载原生离线包 (Zero-Docker)',
         'qs-download-desc': '内置 ONNX 运行库与 BGE-M3 权重。解压即用，支持 100% 物理断网运行。',
         'btn-ent-contact': 'Enterprise 询价 →',
+        'hero-stats': '正在保护 0 运行的节点实例',
+        'reward-banner-title': '反馈有礼：提交 BUG 或建议即可免费延长 30 天试用！',
+        'reward-banner-desc': '在控制台的反馈板块中，提交任何有效建议或问题报告，通过后系统将自动为您的实例延长 30 天试用期。',
         'footer-copyright': '© 2026 上海灵心智算智能科技有限公司. All Rights Reserved. VecminDB is proprietary software.',
         'footer-patent': 'VecminDB 系统核心算法受多项专利申请保护。未经授权，任何形式的逆向工程或商业模仿将面临法律追责。',
         'footer-icp': '沪ICP备2025120712号-1',
@@ -165,6 +168,9 @@ const translations = {
         'qs-download-title': 'Download Native Binaries (Zero-Docker)',
         'qs-download-desc': 'Includes ONNX runtime and BGE-M3 weights. Unzip and run, supports 100% air-gapped execution.',
         'btn-ent-contact': 'Contact Enterprise Sales →',
+        'hero-stats': 'Securing 0 active node instances worldwide',
+        'reward-banner-title': 'PLG Reward: Submit Feedback & Get 30 Days Trial Extension',
+        'reward-banner-desc': 'Submit high-value suggestions or bug reports from your local dashboard to receive an automatic 30-day extension to your trial period.',
         'footer-copyright': '© 2026 Shanghai Lingxin Zhisuan Intelligent Technology Co., Ltd. All Rights Reserved. VecminDB is proprietary software.',
         'footer-patent': 'VecminDB core algorithms are protected by multiple patent applications. Unauthorized reverse engineering or commercial imitation will face legal action.',
         'footer-icp': '沪ICP备2025120712号-1',
@@ -902,6 +908,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    // 启动在线用户实例统计与滚动动效
+    initDynamicStats();
+
 });
 
 // [PRODUCTION-GRADE]: Swaps the active view and button style in the Quick Start area
@@ -952,4 +961,54 @@ window.switchClusterFile = (fileType) => {
         }
     }
 };
+
+/**
+ * [PRODUCTION-GRADE]: Fetches real-time node instance counts from the security-hardened public API
+ * and triggers a smooth ease-out-quad rolling digit animation.
+ */
+function initDynamicStats() {
+    fetch('https://license.lingxinmind.com/public/stats')
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const targetCount = data.user_count;
+                
+                // Update translation templates in memory to persist state on language switch
+                translations.zh['hero-stats'] = `正在保护 ${targetCount.toLocaleString()} 运行的节点实例`;
+                translations.en['hero-stats'] = `Securing ${targetCount.toLocaleString()} active node instances worldwide`;
+                
+                const statsEl = document.querySelector('[data-i18n="hero-stats"]');
+                if (statsEl) {
+                    if (currentLang === 'zh') {
+                        animateNumber(statsEl, targetCount, '正在保护 ', ' 运行的节点实例');
+                    } else {
+                        animateNumber(statsEl, targetCount, 'Securing ', ' active node instances worldwide');
+                    }
+                }
+            }
+        })
+        .catch(err => console.error('[Lingxin-Stats] Failed to retrieve node counts:', err));
+}
+
+/**
+ * Animates a numeric element smoothly from 0 to target value using easeOutQuad.
+ */
+function animateNumber(element, target, prefix, suffix) {
+    let start = 0;
+    const duration = 1500; // 1.5 seconds animation time
+    const startTime = performance.now();
+
+    function step(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const easeProgress = progress * (2 - progress); // easeOutQuad formula
+        const current = Math.floor(easeProgress * target);
+        
+        element.innerHTML = `${prefix}${current.toLocaleString()}${suffix}`;
+        
+        if (progress < 1) {
+            requestAnimationFrame(step);
+        }
+    }
+    requestAnimationFrame(step);
+}
 

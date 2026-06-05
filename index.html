@@ -128,6 +128,12 @@
 
             </div>
 
+            <!-- Dynamic stats badge -->
+            <div class="stats-badge reveal" style="margin-top: 2rem; font-size: 0.9rem; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span class="status-dot" style="display: inline-block; width: 8px; height: 8px; background-color: var(--accent-secondary); border-radius: 50%; box-shadow: 0 0 10px var(--accent-secondary); animation: badgePulse 2s infinite;"></span>
+                <span data-i18n="hero-stats">正在保护 0 运行的节点实例</span>
+            </div>
+
         </section>
 
 
@@ -536,6 +542,17 @@ docker compose down && docker compose pull && docker compose up -d</pre>
             <h2 style="text-align: center; font-size: 2.5rem;" data-i18n="price-title">按 Agent 计费，不按向量</h2>
 
             <p style="text-align: center; color: var(--text-secondary); max-width: 600px; margin: 0 auto 3rem;" data-i18n="price-desc">向量数随时间增长。Agent 数不会。LTSM 蒸馏让存储收敛而非发散——你的账单不随 Agent 运行时间增长。</p>
+
+            <!-- PLG Incentive Banner -->
+            <div class="reward-banner reveal" style="max-width: 1000px; margin: -1.5rem auto 3rem; padding: 1.25rem 2rem; background: linear-gradient(90deg, rgba(59, 130, 246, 0.03) 0%, rgba(6, 182, 212, 0.03) 100%); border: 1px dashed rgba(6, 182, 212, 0.2); border-radius: 16px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; backdrop-filter: blur(10px);">
+                <div style="display: flex; align-items: center; gap: 1.25rem; text-align: left;">
+                    <div style="font-size: 1.75rem; background: rgba(6, 182, 212, 0.1); width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(6, 182, 212, 0.2);">🎁</div>
+                    <div>
+                        <strong style="color: var(--text-primary); font-size: 0.95rem; font-weight: 600; display: block;" data-i18n="reward-banner-title">反馈有礼：提交 BUG 或建议即可免费延长 30 天试用！</strong>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.25rem; line-height: 1.4;" data-i18n="reward-banner-desc">在控制台的反馈板块中，提交任何有效建议或问题报告，通过后系统将自动为您的实例延长 30 天试用期。</p>
+                    </div>
+                </div>
+            </div>
 
             <div class="pricing-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; max-width: 1000px; margin: 0 auto;">
 
