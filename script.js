@@ -82,7 +82,7 @@ const translations = {
         'qs-download-title': '下载原生离线包 (Zero-Docker)',
         'qs-download-desc': '内置 ONNX 运行库与 BGE-M3 权重。解压即用，支持 100% 物理断网运行。',
         'btn-ent-contact': 'Enterprise 询价 →',
-        'hero-stats': '正在保护 0 运行的节点实例',
+        'hero-stats': '已服务 0+ 位开发者与智能体实例',
         'reward-banner-title': '反馈有礼：提交 BUG 或建议即可免费延长 30 天试用！',
         'reward-banner-desc': '在控制台的反馈板块中，提交任何有效建议或问题报告，通过后系统将自动为您的实例延长 30 天试用期。',
         'footer-copyright': '© 2026 上海灵心智算智能科技有限公司. All Rights Reserved. VecminDB is proprietary software.',
@@ -168,7 +168,7 @@ const translations = {
         'qs-download-title': 'Download Native Binaries (Zero-Docker)',
         'qs-download-desc': 'Includes ONNX runtime and BGE-M3 weights. Unzip and run, supports 100% air-gapped execution.',
         'btn-ent-contact': 'Contact Enterprise Sales →',
-        'hero-stats': 'Securing 0 active node instances worldwide',
+        'hero-stats': 'Empowering 0+ developers and agent instances worldwide',
         'reward-banner-title': 'PLG Reward: Submit Feedback & Get 30 Days Trial Extension',
         'reward-banner-desc': 'Submit high-value suggestions or bug reports from your local dashboard to receive an automatic 30-day extension to your trial period.',
         'footer-copyright': '© 2026 Shanghai Lingxin Zhisuan Intelligent Technology Co., Ltd. All Rights Reserved. VecminDB is proprietary software.',
@@ -974,15 +974,15 @@ function initDynamicStats() {
                 const targetCount = data.user_count;
                 
                 // Update translation templates in memory to persist state on language switch
-                translations.zh['hero-stats'] = `正在保护 ${targetCount.toLocaleString()} 运行的节点实例`;
-                translations.en['hero-stats'] = `Securing ${targetCount.toLocaleString()} active node instances worldwide`;
+                translations.zh['hero-stats'] = `已服务 ${targetCount.toLocaleString()}+ 位开发者与智能体实例`;
+                translations.en['hero-stats'] = `Empowering ${targetCount.toLocaleString()}+ developers and agent instances worldwide`;
                 
                 const statsEl = document.querySelector('[data-i18n="hero-stats"]');
                 if (statsEl) {
                     if (currentLang === 'zh') {
-                        animateNumber(statsEl, targetCount, '正在保护 ', ' 运行的节点实例');
+                        animateNumber(statsEl, targetCount, '已服务 ', '+ 位开发者与智能体实例');
                     } else {
-                        animateNumber(statsEl, targetCount, 'Securing ', ' active node instances worldwide');
+                        animateNumber(statsEl, targetCount, 'Empowering ', '+ developers and agent instances worldwide');
                     }
                 }
             }
