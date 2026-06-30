@@ -811,8 +811,8 @@ footer {
 }
 
 /* 双语动态显隐控制 */
-html[lang="zh"] .lang-visible-en { display: none !important; }
-html[lang="en"] .lang-visible-zh { display: none !important; }
+html:lang(zh) .lang-visible-en { display: none !important; }
+html:lang(en) .lang-visible-zh { display: none !important; }
 
 /* 玻璃拟态对比区域样式 */
 .comparison-container {
