@@ -809,3 +809,158 @@ footer {
     background: rgba(6, 182, 212, 0.06) !important;
     box-shadow: 0 8px 30px rgba(6, 182, 212, 0.15) !important;
 }
+
+/* 双语动态显隐控制 */
+html[lang="zh"] .lang-visible-en { display: none !important; }
+html[lang="en"] .lang-visible-zh { display: none !important; }
+
+/* 玻璃拟态对比区域样式 */
+.comparison-container {
+    max-width: 1100px;
+    margin: 3rem auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+}
+
+.layer-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.layer-item {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(12px);
+    text-align: left;
+}
+
+.layer-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(6, 182, 212, 0.4);
+    transform: translateX(6px);
+    box-shadow: 0 4px 25px rgba(6, 182, 212, 0.08);
+}
+
+.layer-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+    text-align: center;
+    width: 220px;
+}
+
+.layer-badge.l1 { background: rgba(59, 130, 246, 0.08); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); }
+.layer-badge.l2 { background: rgba(167, 139, 250, 0.08); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.2); }
+.layer-badge.l3 { background: rgba(244, 63, 94, 0.08); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.2); }
+.layer-badge.l4 { background: rgba(234, 179, 8, 0.08); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.2); }
+.layer-badge.l5 { background: rgba(6, 182, 212, 0.12); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.3); box-shadow: 0 0 12px rgba(6, 182, 212, 0.15); }
+
+.layer-desc {
+    flex-grow: 1;
+    margin-left: 2rem;
+}
+
+.layer-desc h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.layer-desc p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .layer-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+    .layer-desc {
+        margin-left: 0;
+    }
+    .layer-badge {
+        width: 100%;
+        text-align: left;
+    }
+}
+
+.comparison-table-wrapper {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    background: rgba(10, 10, 15, 0.4);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.82rem;
+    min-width: 800px;
+}
+
+.comparison-table th, .comparison-table td {
+    padding: 1.1rem 1.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    line-height: 1.5;
+}
+
+.comparison-table th {
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--accent-secondary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.75rem;
+}
+
+.comparison-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.01);
+}
+
+.comparison-table td strong {
+    color: var(--text-primary);
+}
+
+.badge-yes {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.badge-no {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: inline-block;
+}

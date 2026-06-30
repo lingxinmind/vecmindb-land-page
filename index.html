@@ -106,114 +106,53 @@
       ]
     }
     </script>
-
-    <link rel="stylesheet" href="style.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
-
-</head>
-
-<body>
-
-    <!-- 系统初始化入场层 -->
-
-    <div id="loader-overlay"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050508; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease-out;">
-
-        <div style="font-size: 0.8rem; color: var(--accent-secondary); letter-spacing: 4px; margin-bottom: 20px; text-transform: uppercase;"
-            data-i18n="loader-title">VecminDB Memory OS</div>
-
-        <div
-            style="width: 200px; height: 1px; background: rgba(255, 255, 255, 0.1); position: relative; overflow: hidden;">
-
-            <div id="loader-bar"
-                style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--gradient-aurora); animation: load 2s infinite;">
-            </div>
-
-        </div>
-
-        <div id="loader-status"
-            style="font-size: 0.6rem; color: var(--text-secondary); margin-top: 15px; font-family: monospace;"
-            data-i18n="loader-status">INITIALIZING MEMORY ENGINE...</div>
-
-    </div>
-
-
-
-    <div id="canvas-container"></div>
-
-    <div class="aurora"></div>
-
-
-
-    <header>
-
-        <div class="logo" data-i18n="logo-text">VecminDB</div>
-
-        <nav id="mainNav">
-
-            <a href="#features" data-i18n="nav-features">核心能力</a>
-
-            <a href="#quickstart" data-i18n="nav-quickstart">快速上手</a>
-
-            <a href="#dashboard" data-i18n="nav-dashboard">控制台</a>
-
-            <a href="#pricing" data-i18n="nav-pricing">定价</a>
-
-            <a href="https://github.com/lingxinmind/vecmindb-sdk" target="_blank" data-i18n="nav-docs">文档</a>
-
-        </nav>
-
-        <div class="header-tools">
-
-            <button id="themeToggle" class="icon-btn" title="Toggle Theme">🌓</button>
-
-            <button id="langBtn" class="lang-toggle">EN</button>
-
-        </div>
-
-        <button id="menuBtn" class="menu-trigger">
-
-            <span></span><span></span><span></span>
-
-        </button>
-
-    </header>
-
-
-
-    <main>
-
-        <!-- Hero -->
-
-        <section class="hero">
-
-            <div class="slogan-badge reveal" data-i18n="hero-badge">认知型向量数据库</div>
-
-            <h1 class="float-anim" data-i18n="hero-title">给那些已经超越了<br>传统<span class="gradient-text">向量数据库</span>的 AI 智能体
-            </h1>
-
-            <p data-i18n="hero-desc">VecminDB 是首款融合了“记忆生命周期管理”与“高性能检索”的双核认知向量数据库。它不仅具备极速的向量检索与内置 ONNX
-                嵌入，更原生支持长短期遗忘（LTSM）、在线质心演化（Welford）与联邦知识共享。一行 Docker 启动，让您的 Agent 拥有会自我进化的自主脑。</p>
-
-            <div class="hero-btns">
-
-                <a href="#quickstart" class="btn-primary" data-i18n="btn-start">Docker 一行启动</a>
-
-                <a href="https://github.com/lingxinmind/vecmindb-sdk" target="_blank" class="btn-secondary"
-                    data-i18n="btn-github">GitHub SDK</a>
-
-            </div>
-
-            <!-- Dynamic stats badge -->
-            <div class="stats-badge reveal"
-                style="margin-top: 2rem; font-size: 1.15rem; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <span class="status-dot"
-                    style="display: inline-block; width: 10px; height: 10px; background-color: var(--accent-secondary); border-radius: 50%; box-shadow: 0 0 12px var(--accent-secondary); animation: badgePulse 2s infinite;"></span>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 系统初始化入场层 -->
+    <div id="loader-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050508; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease-out;">
+        <div style="font-size: 0.8rem; color: var(--accent-secondary); letter-spacing: 4px; margin-bottom: 20px; text-transform: uppercase;" data-i18n="loader-title">VecminDB Memory OS</div>
+        <div style="width: 200px; height: 1px; background: rgba(255, 255, 255, 0.1); position: relative; overflow: hidden;">
+            <div id="loader-bar" style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--gradient-aurora); animation: load 2s infinite;"></div>
+        </div>
+        <div id="loader-status" style="font-size: 0.6rem; color: var(--text-secondary); margin-top: 15px; font-family: monospace;" data-i18n="loader-status">INITIALIZING MEMORY ENGINE...</div>
+    </div>
+    <div id="canvas-container"></div>
+    <div class="aurora"></div>
+    <header>
+        <div class="logo" data-i18n="logo-text">VecminDB</div>
+        <nav id="mainNav">
+            <a href="#features" data-i18n="nav-features">核心能力</a>
+            <a href="#quickstart" data-i18n="nav-quickstart">快速上手</a>
+            <a href="#dashboard" data-i18n="nav-dashboard">控制台</a>
+            <a href="#pricing" data-i18n="nav-pricing">定价</a>
+            <a href="compare.html" data-i18n="nav-compare">横向对比</a>
+            <a href="https://github.com/lingxinmind/vecmindb-sdk" target="_blank" data-i18n="nav-docs">文档</a>
+        </nav>
+        <div class="header-tools">
+            <button id="themeToggle" class="icon-btn" title="Toggle Theme">🌓</button>
+            <button id="langBtn" class="lang-toggle">EN</button>
+        </div>
+        <button id="menuBtn" class="menu-trigger">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="slogan-badge reveal" data-i18n="hero-badge">认知型向量数据库</div>
+            <h1 class="float-anim" data-i18n="hero-title">给那些已经超越了<br>传统<span class="gradient-text">向量数据库</span>的 AI 智能体</h1>
+            <p data-i18n="hero-desc">VecminDB 是首款融合了“记忆生命周期管理”与“高性能检索”的双核认知向量数据库。它不仅具备极速的向量检索与内置 ONNX 嵌入，更原生支持长短期遗忘（LTSM）、在线质心演化（Welford）与联邦知识共享。一行 Docker 启动，让您的 Agent 拥有会自我进化的自主脑。</p>
+            <div class="hero-btns">
+                <a href="#quickstart" class="btn-primary" data-i18n="btn-start">Docker 一行启动</a>
+                <a href="https://github.com/lingxinmind/vecmindb-sdk" target="_blank" class="btn-secondary" data-i18n="btn-github">GitHub SDK</a>
+            </div>
+            <!-- Dynamic stats badge -->
+            <div class="stats-badge reveal" style="margin-top: 2rem; font-size: 1.15rem; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span class="status-dot" style="display: inline-block; width: 10px; height: 10px; background-color: var(--accent-secondary); border-radius: 50%; box-shadow: 0 0 12px var(--accent-secondary); animation: badgePulse 2s infinite;"></span>
                 <span data-i18n="hero-stats">已服务 0+ 位开发者与智能体实例</span>
             </div>
 
@@ -665,6 +604,281 @@ docker compose down && docker compose pull && docker compose up -d</pre>
         </section>
 
 
+        <!-- Comparison Section -->
+        <section id="comparison" class="section reveal">
+            <div class="lang-visible-zh">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">群脑认知 Memory OS vs 传统向量数据库</h2>
+                <p style="text-align: center; color: var(--text-secondary); max-width: 700px; margin: 0 auto 3rem;">
+                    这不仅仅是另一个向量数据库。VecminDB 在行业首创了认知记忆全生命周期的管理系统（Memory OS），解决了多智能体架构下的成本、隔离和协同痛点。
+                </p>
+                
+                <div class="comparison-container">
+                    <!-- Layer stack L1-L5 -->
+                    <div class="layer-stack">
+                        <div class="layer-item">
+                            <span class="layer-badge l5">L5: 记忆引擎 (Memory OS)</span>
+                            <div class="layer-desc">
+                                <h4>VecminDB</h4>
+                                <p><strong>能做啥</strong>：从存储、自动衰减、质心蒸馏、遗忘，到跨租户差分联邦、WAL 加密审计全生命周期闭环管理。</p>
+                            </div>
+                        </div>
+                        <div class="layer-item">
+                            <span class="layer-badge l4">L4: 图 + 向量融合</span>
+                            <div class="layer-desc">
+                                <h4>Neo4j, TigerVector</h4>
+                                <p><strong>能做啥</strong>：GraphRAG，处理复杂多跳语义推理；<strong>做不了啥</strong>：无记忆自然衰减，无质心压缩及遗忘机制。</p>
+                            </div>
+                        </div>
+                        <div class="layer-item">
+                            <span class="layer-badge l3">L3: 自学习引擎</span>
+                            <div class="layer-desc">
+                                <h4>Cognee</h4>
+                                <p><strong>能做啥</strong>：向量与图谱融合、ECL 数据流水线；<strong>做不了啥</strong>：无本地打包二进制、必须依赖外部大模型及 Embedding API、缺乏跨 Tenant 联邦保护。</p>
+                            </div>
+                        </div>
+                        <div class="layer-item">
+                            <span class="layer-badge l2">L2: Agent 记忆框架</span>
+                            <div class="layer-desc">
+                                <h4>Mem0, Letta (MemGPT)</h4>
+                                <p><strong>能做啥</strong>：为 AI 智能体封装上层记忆 API 接口；<strong>做不了啥</strong>：纯 SaaS 模式多依赖外部服务、企业敏感数据必须出境、缺乏对底层计算引擎的精细资源控制。</p>
+                            </div>
+                        </div>
+                        <div class="layer-item">
+                            <span class="layer-badge l1">L1: 传统向量数据库</span>
+                            <div class="layer-desc">
+                                <h4>Pinecone, Milvus, Qdrant</h4>
+                                <p><strong>能做啥</strong>：高性能向量数据存储及常规的近邻 ANN 检索；<strong>做不了啥</strong>：不具备生命周期管理能力，不主动进行记忆蒸馏、概念提纯与自动遗忘。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 12 Kill Points Table -->
+                    <div class="comparison-table-wrapper">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>能力维度</th>
+                                    <th>行业痛点 / 业务价值</th>
+                                    <th>传统竞品状态</th>
+                                    <th>VecminDB 引擎状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1. LTSM 生物学遗忘曲线</strong></td>
+                                    <td>防范垃圾记忆腐化，保证智能体不会被几个月前的干扰噪音误导</td>
+                                    <td><span class="badge-no">❌ 空白</span> 需应用层自行写过滤规则</td>
+                                    <td><span class="badge-yes">✓ 内核级</span> W(t)=exp(-λ×Δt) 自动半衰期退化</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2. PCA 质心异步蒸馏</strong></td>
+                                    <td>自动压缩归纳同类记忆，杜绝大量冗余向量导致的检索精度雪崩</td>
+                                    <td><span class="badge-no">❌ 外部调用</span> 依赖外部 LLM 总结，费用暴涨</td>
+                                    <td><span class="badge-yes">✓ 引擎级</span> 后台自动执行 PCA 协方差冷凝质心</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3. InsertionLatch 去重锁</strong></td>
+                                    <td>防止相同或相似语义的并发重复写入导致 ANN 索引异常膨胀</td>
+                                    <td><span class="badge-no">❌ 空白</span> 只能全量重复存入</td>
+                                    <td><span class="badge-yes">✓ 内核级</span> 并发语义锁拦截，实现内存去重</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4. 内置端侧模型 (BGE-M3)</strong></td>
+                                    <td>零环境依赖，100% 离线脱网运行，免去配置庞大 Python 库的痛苦</td>
+                                    <td><span class="badge-no">❌ 依赖 API</span> 需额外部署 Python/PyTorch 或连接 OpenAI</td>
+                                    <td><span class="badge-yes">✓ 零依赖</span> 内置 ONNX Runtime，解压单二进制即可运行</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5. Alliance Centroid 联邦</strong></td>
+                                    <td>新部署的 Agent 能够共享群体知识经验，无需一切从零开始学习</td>
+                                    <td><span class="badge-no">❌ 空白</span> 无法实现跨实例的安全语义同步</td>
+                                    <td><span class="badge-yes">✓ DP-Federated</span> 跨租户差分隐私 PCA 协同，共享语义质心</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>6. 自动衰减→存储收敛</strong></td>
+                                    <td>控制存储预算，防止传统向量库随运行时间推移费用沦为无底洞</td>
+                                    <td><span class="badge-no">❌ 越用越贵</span> 向量数无限累积，费用线性暴涨</td>
+                                    <td><span class="badge-yes">✓ 自动收敛</span> 记忆冷凝成质心后自动物理剪枝，存储受控</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>7. Sovereignty Token 隔离</strong></td>
+                                    <td>强力阻止跨智能体（如财务与客服 Agent）之间越权读取私密记忆</td>
+                                    <td><span class="badge-no">❌ 逻辑命名空间</span> 仅在应用层 filter，安全性弱</td>
+                                    <td><span class="badge-yes">✓ 内核级绑定</span> 签名链强制物理隔离校验</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>8. HMAC-SHA256 审计链</strong></td>
+                                    <td>金融级审计智能体的决策链，防止智能体出现幻觉或被恶意注入指令</td>
+                                    <td><span class="badge-no">❌ 空白</span> 无法还原决策发生时的原始向量快照</td>
+                                    <td><span class="badge-yes">✓ 自动落盘</span> 每次访问均生成不可篡改的加密审计日志</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>9. 原始文本与向量同步落盘</strong></td>
+                                    <td>极度关键：当 Embedding 模型升级时，历史向量自动重算，防数据作废</td>
+                                    <td><span class="badge-no">❌ 空白</span> 历史向量彻底报废，必须重新抽取原始数据</td>
+                                    <td><span class="badge-yes">✓ 自动同步</span> 原始文本与多维向量同步原子落盘，无缝平滑重构</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>10. NSGA-II 影子自调优</strong></td>
+                                    <td>无需高薪 DBA，自动在召回率、延迟和内存消耗中搜寻最优索引配置</td>
+                                    <td><span class="badge-no">❌ 手工调参</span> 需离线停机重建索引，调参痛苦</td>
+                                    <td><span class="badge-yes">✓ 零中断切换</span> HNSW 影子重建 + ArcSwapAny 双指针原子热切换</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>11. Air-gapped 离线部署</strong></td>
+                                    <td>满足国防、政企、金融行业的极端数据出境合规和局域网要求</td>
+                                    <td><span class="badge-no">❌ 需连接公网</span> 需拉取云端模型依赖或授权服务</td>
+                                    <td><span class="badge-yes">✓ 100% 局域网</span> 单文件解压，全量算法与验证离线自闭环</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>12. 遥测健康大盘</strong></td>
+                                    <td>直观监控智能体的抽象概念网络、系统吞吐量及许可天数，便于运维管理</td>
+                                    <td><span class="badge-no">❌ 基础指标</span> 仅有 CPU、内存等基础物理硬件指标</td>
+                                    <td><span class="badge-yes">✓ 可视化脑图</span> 脑图质心聚类大盘 + 专属 Prometheus 记忆指标</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lang-visible-en">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">Memory OS vs Vector Databases</h2>
+                <p style="text-align: center; color: var(--text-secondary); max-width: 700px; margin: 0 auto 3rem;">
+                    VecminDB is not just another vector database. It introduces the industry's first active Memory OS, managing the entire cognitive lifecycle of autonomous agents.
+                </p>
+                
+                <div class="comparison-container">
+                    <!-- Layer stack L1-L5 -->
+                    <div class="layer-stack">
+                        <div class="layer-item">
+                            <span class="layer-badge l5">L5: Memory Engine (Memory OS)</span>
+                            <div class="layer-desc">
+                                <h4>VecminDB</h4>
+                                <p><strong>Capabilities</strong>: Complete lifecycle management: storage, decay, centroid distillation, forgetting, differential federated consensus, and WAL auditing.</p>
+                            </div>
+                        </div>
+                        <div class="layer-item">
+                            <span class="layer-badge l4">L4: Graph + Vector Fusion</span>
+                            <div class="layer-desc">
+                                <h4>Neo4j, TigerVector</h4>
+                                <p><strong>Capabilities</strong>: GraphRAG, handling complex multi-hop semantic reasoning. <strong>Limitations</strong>: No automatic memory decay, summarization, or forget gates.</p>
+                            </div>
+                        </div>
+                        <div class="layer-item">
+                            <span class="layer-badge l3">L3: Self-Learning Engine</span>
+                            <div class="layer-desc">
+                                <h4>Cognee</h4>
+                                <p><strong>Capabilities</strong>: Graph-vector fusion, ECL data pipelines. <strong>Limitations</strong>: No local offline binary package, heavily relies on external LLM and Embedding APIs, lacks cross-tenant privacy federation.</p>
+                            </div>
+                        </div>
+                        <div class="layer-item">
+                            <span class="layer-badge l2">L2: Agent Memory Framework</span>
+                            <div class="layer-desc">
+                                <h4>Mem0, Letta (MemGPT)</h4>
+                                <p><strong>Capabilities</strong>: Encapsulates high-level memory APIs for AI agents. <strong>Limitations</strong>: SaaS-heavy setups, sensitive enterprise data leaves boundaries, lacks fine-grained resource limits on the core database engine.</p>
+                            </div>
+                        </div>
+                        <div class="layer-item">
+                            <span class="layer-badge l1">L1: Traditional Vector DB</span>
+                            <div class="layer-desc">
+                                <h4>Pinecone, Milvus, Qdrant</h4>
+                                <p><strong>Capabilities</strong>: High-performance vector storage and basic ANN semantic search. <strong>Limitations</strong>: No lifecycle concept; memories simply pile up without distillation, compression, or active forgetting.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 12 Kill Points Table -->
+                    <div class="comparison-table-wrapper">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Pain Point & Business Value</th>
+                                    <th>Competitors</th>
+                                    <th>VecminDB Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1. LTSM Biological Decay</strong></td>
+                                    <td>Prevents memory corruption; stops agents from being misled by obsolete context.</td>
+                                    <td><span class="badge-no">❌ Empty</span> Handled manually in app-level.</td>
+                                    <td><span class="badge-yes">✓ Kernel-level</span> W(t)=exp(-λ×Δt) half-life decay.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2. PCA Centroid Distillation</strong></td>
+                                    <td>Compresses redundant memories automatically into centroids to keep recall precision high.</td>
+                                    <td><span class="badge-no">❌ External LLM</span> High API costs to summarize.</td>
+                                    <td><span class="badge-yes">✓ Engine-level</span> Automatic PCA covariance distillation.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3. InsertionLatch Deduplication</strong></td>
+                                    <td>Intercepts duplicate semantic records to prevent HNSW index bloat.</td>
+                                    <td><span class="badge-no">❌ Empty</span> Duplicates simply appended.</td>
+                                    <td><span class="badge-yes">✓ Kernel-level</span> Semantic lock intercepts identical records.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4. Built-in BGE-M3 Model</strong></td>
+                                    <td>Zero-config, 100% offline local running; no heavy Python setup needed.</td>
+                                    <td><span class="badge-no">❌ External API</span> Requires PyTorch/OpenAI setup.</td>
+                                    <td><span class="badge-yes">✓ Zero-dependency</span> Integrated ONNX Runtime out-of-the-box.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5. Alliance Centroid Federation</strong></td>
+                                    <td>Enables new agents to instantly inherit group experience without starting from scratch.</td>
+                                    <td><span class="badge-no">❌ Empty</span> Cannot sync knowledge securely.</td>
+                                    <td><span class="badge-yes">✓ DP-Federated</span> Cross-tenant PCA with Laplace noise and 10% bias.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>6. Storage Convergence</strong></td>
+                                    <td>Controls cloud storage bill, preventing endless growth of index size.</td>
+                                    <td><span class="badge-no">❌ Linearly Growing</span> Costs grow with time.</td>
+                                    <td><span class="badge-yes">✓ Converged</span> Obsolete centroids physically pruned automatically.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>7. Sovereignty Token Isolation</strong></td>
+                                    <td>Guarantees that agents in different departments cannot access each other's memories.</td>
+                                    <td><span class="badge-no">❌ Logic Namespaces</span> Soft filters at the app layer.</td>
+                                    <td><span class="badge-yes">✓ Kernel-level</span> Cryptographic signature chains.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>8. HMAC-SHA256 WAL Audit Trail</strong></td>
+                                    <td>Enables security auditing of agent decisions to prevent prompt injection.</td>
+                                    <td><span class="badge-no">❌ Empty</span> Cannot reconstruct historical memories.</td>
+                                    <td><span class="badge-yes">✓ Auto-persist</span> Signed immutable access logs on disk.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>9. Raw Text & Vector Sync</strong></td>
+                                    <td>Ensures automatic vector reconstruction when upgrading embedding models.</td>
+                                    <td><span class="badge-no">❌ Empty</span> Historic vectors become useless.</td>
+                                    <td><span class="badge-yes">✓ Atomic Sync</span> Native text + vector synchronization on disk.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>10. NSGA-II Shadow Tuning</strong></td>
+                                    <td>Zero-downtime database optimization for recall, latency, and memory.</td>
+                                    <td><span class="badge-no">❌ Offline Rebuild</span> Re-indexing causes query downtime.</td>
+                                    <td><span class="badge-yes">✓ Zero-Downtime</span> HNSW shadow build + ArcSwapAny hot swap.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>11. Air-gapped Deployment</strong></td>
+                                    <td>Meets strict data sovereignty compliance requirements (defense, banking, government).</td>
+                                    <td><span class="badge-no">❌ Online Required</span> Requires cloud verification.</td>
+                                    <td><span class="badge-yes">✓ 100% Offline</span> Single-binary self-verification.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>12. Telemetry & Visual Graph</strong></td>
+                                    <td>Allows DevOps to monitor concept graphs, cluster heartbeats, and license terms.</td>
+                                    <td><span class="badge-no">❌ Hardware Only</span> Generic CPU/Memory graphs.</td>
+                                    <td><span class="badge-yes">✓ Brain-map UI</span> Clustering visual graph + Prometheus metrics.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Pricing -->
 
         <section id="pricing" class="section reveal">

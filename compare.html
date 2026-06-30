@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VecminDB vs Competitors — 认知记忆引擎代际横评对比</title>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23050508'/><circle cx='50' cy='50' r='30' stroke='%233b82f6' stroke-width='8' fill='none' stroke-dasharray='10 5'/><circle cx='50' cy='50' r='10' fill='%2306b6d4'/></svg>">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        .compare-body {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+            text-align: left;
+        }
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: var(--gradient-aurora);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+        }
+        .compare-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(15px);
+            margin-bottom: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .compare-card h3 {
+            font-size: 1.3rem;
+            color: var(--accent-secondary);
+            margin-bottom: 1.25rem;
+            border-left: 3px solid var(--accent);
+            padding-left: 0.75rem;
+        }
+        .tech-stack-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0.25rem;
+        }
+        .ranking-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.01);
+            border: 1px solid rgba(255,255,255,0.03);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+        }
+        .ranking-badge {
+            font-size: 1.25rem;
+            font-weight: bold;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+    <div class="aurora"></div>
+
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 100 100" style="width: 32px; height: 32px;">
+                    <rect width="100" height="100" rx="20" fill="#050508"/>
+                    <circle cx="50" cy="50" r="30" stroke="#3b82f6" stroke-width="8" fill="none" stroke-dasharray="10 5"/>
+                    <circle cx="50" cy="50" r="10" fill="#06b6d4"/>
+                </svg>
+                <span>VecminDB</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html#features" data-i18n="nav-features">特性</a>
+                <a href="index.html#comparison" data-i18n="nav-comparison">对比</a>
+                <a href="index.html#pricing" data-i18n="nav-pricing">定价</a>
+                <a href="compare.html" style="color: var(--accent-secondary);" data-i18n="nav-docs">横向对比</a>
+            </nav>
+            <button class="lang-toggle" id="langBtn">EN</button>
+        </div>
+    </header>
+
+    <main class="compare-body">
+        
+        <!-- ======================= CHINESE CONTAINER ======================= -->
+        <div class="lang-visible-zh">
+            <h1 class="section-title">VecminDB vs 全行业存储与记忆方案分层评测</h1>
+            
+            <!-- 1. 分层认知排位 -->
+            <div class="compare-card">
+                <h3>层级架构比对：静态索引 vs 动态记忆 OS</h3>
+                <div class="layer-stack">
+                    <div class="layer-item">
+                        <span class="layer-badge l5">L5: 记忆引擎 (Memory OS)</span>
+                        <div class="layer-desc">
+                            <h4>VecminDB (本项目)</h4>
+                            <p><strong>定义与能力</strong>：存储 → 衰减 → 蒸馏 → 遗忘 → 联邦 → 审计全生命周期的记忆管理。活体智能体记忆神经中枢。</p>
+                        </div>
+                    </div>
+                    <div class="layer-item">
+                        <span class="layer-badge l4">L4: 图 + 向量融合</span>
+                        <div class="layer-desc">
+                            <h4>Neo4j, TigerVector</h4>
+                            <p><strong>能力</strong>：GraphRAG 与多跳推理。<strong>缺陷</strong>：无记忆自然衰减概念，不具备自动冷冻、蒸馏和主动遗忘。</p>
+                        </div>
+                    </div>
+                    <div class="layer-item">
+                        <span class="layer-badge l3">L3: 自学习引擎</span>
+                        <div class="layer-desc">
+                            <h4>Cognee</h4>
+                            <p><strong>能力</strong>：向量与图谱融合、ECL 数据流水线。<strong>缺陷</strong>：依赖外部 Embedding 和 LLM API，无本地打包零依赖能力，无联邦隔离机制。</p>
+                        </div>
+                    </div>
+                    <div class="layer-item">
+                        <span class="layer-badge l2">L2: Agent 记忆框架</span>
+                        <div class="layer-desc">
+                            <h4>Mem0, Letta (MemGPT), Zep</h4>
+                            <p><strong>能力</strong>：上层封装好的记忆 CRUD API 接口。<strong>缺陷</strong>：SaaS 服务为主、数据必须出境、对底层引擎无细粒度控制力。</p>
+                        </div>
+                    </div>
+                    <div class="layer-item">
+                        <span class="layer-badge l1">L1: 传统向量数据库</span>
+                        <div class="layer-desc">
+                            <h4>Pinecone, Milvus, Qdrant, Weaviate</h4>
+                            <p><strong>能力</strong>：高维度 ANN 近邻检索。<strong>缺陷</strong>：不管理记忆生命周期，仅提供静态的增删改查，数据随时间无上限膨胀，无法自演化。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 12个独家 Kill Point -->
+            <div class="compare-card">
+                <h3>12 项核心 Kill Points 独家对比</h3>
+                <div class="comparison-table-wrapper">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>能力特征</th>
+                                <th>业务价值与痛点解决</th>
+                                <th>传统竞品状态</th>
+                                <th>VecminDB 引擎</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><strong>LTSM 生物遗忘曲线</strong></td>
+                                <td>自动淡化旧干扰记忆，保证智能体不会被过时信息误导</td>
+                                <td>❌ 全行业空白</td>
+                                <td><span class="badge-yes">✓ 内核级自动衰减</span></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><strong>PCA 质心异步冷凝</strong></td>
+                                <td>归纳并合并海量相似语义记忆，防止索引空间爆满</td>
+                                <td>❌ 依赖外部大模型手动整理</td>
+                                <td><span class="badge-yes">✓ 引擎后台异步计算</span></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><strong>InsertionLatch 去重锁</strong></td>
+                                <td>高并发下语义重复的数据只写入一次，拦截冗余落盘</td>
+                                <td>❌ 空白，来者不拒重复存入</td>
+                                <td><span class="badge-yes">✓ 语义级排他并发锁</span></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><strong>内置端侧旗舰权重 (BGE-M3)</strong></td>
+                                <td>真正的局域网断网运行，开发无需配置繁琐 Python 环境</td>
+                                <td>❌ 需外部 Python/API 依赖</td>
+                                <td><span class="badge-yes">✓ 内置 ONNX Runtime</span></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><strong>Alliance Centroid 联邦</strong></td>
+                                <td>多个智能体实例在完全隐私状态下无缝继承并共享群体经验</td>
+                                <td>❌ 全行业空白</td>
+                                <td><span class="badge-yes">✓ DP-Federated 差分共享</span></td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td><strong>自动衰减至存储收敛</strong></td>
+                                <td>存储体积自动趋向于合理上限，杜绝无限随运行时间线性扣费</td>
+                                <td>❌ 越用越贵，账单是无底洞</td>
+                                <td><span class="badge-yes">✓ 概念蒸馏后自动剪枝</span></td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td><strong>Sovereignty Token 主权隔离</strong></td>
+                                <td>金融级隔离，严控跨 Agent 记忆越权与提权攻击</td>
+                                <td>❌ 仅应用层逻辑 Namespace</td>
+                                <td><span class="badge-yes">✓ 内核级签名强绑定</span></td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td><strong>HMAC-SHA256 WAL 审计链</strong></td>
+                                <td>不可篡改的日志，完整还原并审计智能体做出某项决策时的向量快照</td>
+                                <td>❌ 全行业空白</td>
+                                <td><span class="badge-yes">✓ 物理防篡改加密日志</span></td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td><strong>原始文本与多维向量同步落盘</strong></td>
+                                <td>最核心保护：未来 Embedding 模型升级时，引擎自动对历史数据一键重构</td>
+                                <td>❌ 历史数据作废，必须全量重抓</td>
+                                <td><span class="badge-yes">✓ 文本与向量原子绑定落盘</span></td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td><strong>NSGA-II 影子自调优</strong></td>
+                                <td>智能体自动进行参数调配，省去聘请高薪专业 DBA 的成本</td>
+                                <td>❌ 需停机人工离线重建索引</td>
+                                <td><span class="badge-yes">✓ 影子重建+ArcSwapAny</span></td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td><strong>100% Air-gapped 局域网自闭环</strong></td>
+                                <td>完美契合政企、国防等敏感数据不出域的极端安全要求</td>
+                                <td>❌ 需云端 API 交互或公网授权</td>
+                                <td><span class="badge-yes">✓ 单一二进制离线运行</span></td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td><strong>脑图遥测聚类大盘</strong></td>
+                                <td>运维人员可通过可视化脑图、心跳、License 监控直观掌控全局</td>
+                                <td>❌ 仅提供最基础物理资源面板</td>
+                                <td><span class="badge-yes">✓ 专属 Prometheus+可视化</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. 技术栈速览 -->
+            <div class="compare-card">
+                <h3>物理技术栈速览</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">VecminDB 底层由 Rust 2024 版本编写，通过严密的基础设施架构保证了高性能与低系统开销：</p>
+                <div>
+                    <span class="tech-stack-tag">Rust 2024 Edition</span>
+                    <span class="tech-stack-tag">RocksDB (多列族高性能原子持久化)</span>
+                    <span class="tech-stack-tag">ONNX Runtime (ort 2.0 旗舰级端侧模型)</span>
+                    <span class="tech-stack-tag">BGE-M3 (混合多语言稠密/稀疏向量)</span>
+                    <span class="tech-stack-tag">HNSW / IVF-PQ 混合高维索引</span>
+                    <span class="tech-stack-tag">ndarray + rayon 并行数学矩阵库</span>
+                    <span class="tech-stack-tag">actix-web + rustls 高并发底层通信</span>
+                    <span class="tech-stack-tag">MCP (Model Context Protocol) 原生支持</span>
+                    <span class="tech-stack-tag">WASM Runtime 算法沙箱隔离</span>
+                    <span class="tech-stack-tag">PostgreSQL / Neo4j / MongoDB Connectors</span>
+                </div>
+            </div>
+
+            <!-- 4. 认知真实排位 -->
+            <div class="compare-card">
+                <h3>认知型数据库真实排位 (排位标准：主动生命周期演化能力)</h3>
+                <ul class="ranking-list">
+                    <li class="ranking-item">
+                        <span class="ranking-badge">🥇</span>
+                        <div>
+                            <strong>VecminDB</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.25rem;">记忆全生命周期管理（衰减、冷凝蒸馏、主动遗忘、Sovereignty隔离及DP-Federated联邦）。</p>
+                        </div>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="ranking-badge">🥈</span>
+                        <div>
+                            <strong>Cognee</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.25rem;">三存储图谱融合，支持 Memify 机制，但重度依赖外部 Embedding 和 LLM 服务。</p>
+                        </div>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="ranking-badge">🥉</span>
+                        <div>
+                            <strong>Weaviate</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.25rem;">支持集成 Embedding 推理，但没有主动记忆的衰减、归纳与遗忘机制。</p>
+                        </div>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="ranking-badge">4</span>
+                        <div>
+                            <strong>RuVector</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.25rem;">基于 GNN 自学习，生态小，无联邦机制及冷凝落盘设计。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 5. 为什么搜不到 -->
+            <div class="compare-card">
+                <h3>为什么您在公开搜索引擎中几乎找不到 VecminDB？</h3>
+                <p style="color: var(--text-secondary); line-height: 1.6; font-size: 0.85rem;">
+                    1. <strong>闭源商业产品 (LicenseRef-VecminDB-Proprietary)</strong>：VecminDB 核心引擎是完全闭源发行的商业版权产品，与 Pinecone、Weaviate 等拥有大量资本宣发的开源产品不同，我们不采用以牺牲核心产权为代价的纯开源宣发策略，只有 SDK 部分是开源分发的。<br>
+                    2. <strong>Memory OS 定位</strong>：我们对 VecminDB 的定位是 **智能体记忆操作系统 (Memory OS)**，而不是“又一个数据库”。这一品类教育才刚刚开始，因此很多传统向量数据库的测评文章并不会包含我们。<br>
+                    3. <strong>v1.0.0 早期版本</strong>：当前项目版本处于 v1.0.0 商业化的初始成熟期，我们主要服务于企业级局域网、机密认知代理及国防军工项目，公开社区的测评还在逐步建设之中。
+                </p>
+            </div>
+        </div>
+
+        <!-- ======================= ENGLISH CONTAINER ======================= -->
+        <div class="lang-visible-en">
+            <h1 class="section-title">VecminDB vs Industry Storage & Memory Solutions</h1>
+            
+            <!-- 1. Layered Architecture -->
+            <div class="compare-card">
+                <h3>Architecture Comparison: Static Indexes vs Dynamic Memory OS</h3>
+                <div class="layer-stack">
+                    <div class="layer-item">
+                        <span class="layer-badge l5">L5: Memory Engine (Memory OS)</span>
+                        <div class="layer-desc">
+                            <h4>VecminDB (This Project)</h4>
+                            <p><strong>Capabilities</strong>: Manages the full cognitive lifecycle: storage, decay, centroid distillation, active forgetting, differential privacy federation, and signed WAL auditing.</p>
+                        </div>
+                    </div>
+                    <div class="layer-item">
+                        <span class="layer-badge l4">L4: Graph + Vector Fusion</span>
+                        <div class="layer-desc">
+                            <h4>Neo4j, TigerVector</h4>
+                            <p><strong>Capabilities</strong>: GraphRAG & multi-hop semantic reasoning. <strong>Limitations</strong>: No decay mechanisms, and no automatic centroid distillation or forget gates.</p>
+                        </div>
+                    </div>
+                    <div class="layer-item">
+                        <span class="layer-badge l3">L3: Self-Learning Engine</span>
+                        <div class="layer-desc">
+                            <h4>Cognee</h4>
+                            <p><strong>Capabilities</strong>: Vector-graph fusion, ECL pipelines. <strong>Limitations</strong>: Heavily relies on external APIs, no zero-dependency offline executable, lacks cross-tenant privacy federation.</p>
+                        </div>
+                    </div>
+                    <div class="layer-item">
+                        <span class="layer-badge l2">L2: Agent Memory Framework</span>
+                        <div class="layer-desc">
+                            <h4>Mem0, Letta (MemGPT), Zep</h4>
+                            <p><strong>Capabilities</strong>: Wraps high-level memory CRUD APIs for agents. <strong>Limitations</strong>: SaaS-dependent, data must leave boundaries, no local engine resource control.</p>
+                        </div>
+                    </div>
+                    <div class="layer-item">
+                        <span class="layer-badge l1">L1: Traditional Vector DB</span>
+                        <div class="layer-desc">
+                            <h4>Pinecone, Milvus, Qdrant, Weaviate</h4>
+                            <p><strong>Capabilities</strong>: Fast high-dimensional ANN semantic queries. <strong>Limitations</strong>: No memory lifecycle concept; data piles up infinitely causing bills to spike, lacks self-evolution.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 12 Kill Points -->
+            <div class="compare-card">
+                <h3>12 Exclusive Kill Points Comparison</h3>
+                <div class="comparison-table-wrapper">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Feature</th>
+                                <th>Pain Point & Business Value</th>
+                                <th>Competitors</th>
+                                <th>VecminDB Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><strong>LTSM Biological Decay</strong></td>
+                                <td>Fades out obsolete memory records automatically to prevent noise.</td>
+                                <td>❌ Empty</td>
+                                <td><span class="badge-yes">✓ Kernel-level decay</span></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><strong>PCA Centroid Distillation</strong></td>
+                                <td>Summarizes similar memories into centroids to keep recall high.</td>
+                                <td>❌ Manual LLM summaries</td>
+                                <td><span class="badge-yes">✓ Background async PCA</span></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><strong>InsertionLatch Lock</strong></td>
+                                <td>Prevents duplicate semantic writes to stop HNSW index bloat.</td>
+                                <td>❌ Empty, duplicate appended</td>
+                                <td><span class="badge-yes">✓ Semantic-latch lock</span></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><strong>Built-in Model (BGE-M3)</strong></td>
+                                <td>Zero setup pain, 100% offline; no complex Python environments needed.</td>
+                                <td>❌ External API required</td>
+                                <td><span class="badge-yes">✓ Integrated ONNX Runtime</span></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><strong>Alliance Centroid Federation</strong></td>
+                                <td>Enables new agents to share group knowledge securely without starting from scratch.</td>
+                                <td>❌ Empty</td>
+                                <td><span class="badge-yes">✓ DP-Federated PCA</span></td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td><strong>Storage Convergence</strong></td>
+                                <td>Limits memory size automatically, preventing cloud costs from exploding.</td>
+                                <td>❌ Exponential bills</td>
+                                <td><span class="badge-yes">✓ Auto-pruning after distillation</span></td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td><strong>Sovereignty Token Isolation</strong></td>
+                                <td>Cryptographically enforces separation of memories between different agents.</td>
+                                <td>❌ App-layer namespace</td>
+                                <td><span class="badge-yes">✓ Kernel signature binding</span></td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td><strong>HMAC-SHA256 WAL Audit</strong></td>
+                                <td>金融级 signed log, allowing audit of decision-making memory snapshots.</td>
+                                <td>❌ Empty</td>
+                                <td><span class="badge-yes">✓ Tamper-proof WAL signature</span></td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td><strong>Raw Text & Vector Sync</strong></td>
+                                <td>Most Critical: Reconstructs vectors automatically when updating embedding models.</td>
+                                <td>❌ Historical vectors lost</td>
+                                <td><span class="badge-yes">✓ Text-vector atomic sync on disk</span></td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td><strong>NSGA-II Auto Shadow Tuning</strong></td>
+                                <td>Optimizes recall, latency, and memory usage without hiring expensive DBAs.</td>
+                                <td>❌ Offline re-indexing</td>
+                                <td><span class="badge-yes">✓ HNSW Shadow + ArcSwapAny</span></td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td><strong>100% Air-gapped</strong></td>
+                                <td>Ideal for extreme security regulations where data cannot leave the private server.</td>
+                                <td>❌ Online authentication</td>
+                                <td><span class="badge-yes">✓ Single offline binary</span></td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td><strong>Telemetry & Brain Visualizer</strong></td>
+                                <td>Visualizes concept graphs, heartbeats, and license terms out-of-the-box.</td>
+                                <td>❌ Raw CPU/RAM only</td>
+                                <td><span class="badge-yes">✓ Dedicated visual map + Prometheus</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. Tech Stack -->
+            <div class="compare-card">
+                <h3>Underlying Technology Stack</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">VecminDB is engineered from scratch in Rust 2024 for minimal overhead and maximum concurrency:</p>
+                <div>
+                    <span class="tech-stack-tag">Rust 2024 Edition</span>
+                    <span class="tech-stack-tag">RocksDB (Multi-Column Family WAL)</span>
+                    <span class="tech-stack-tag">ONNX Runtime (ort 2.0 integrated)</span>
+                    <span class="tech-stack-tag">BGE-M3 (Multi-lingual Hybrid dense/sparse)</span>
+                    <span class="tech-stack-tag">HNSW & IVF-PQ algorithms</span>
+                    <span class="tech-stack-tag">ndarray + rayon (Parallel matrix maths)</span>
+                    <span class="tech-stack-tag">actix-web + rustls (High-throughput communication)</span>
+                    <span class="tech-stack-tag">MCP (Model Context Protocol) native</span>
+                    <span class="tech-stack-tag">WASM Runtime (Isolated algorithm sandboxing)</span>
+                    <span class="tech-stack-tag">Enterprise connectors (PostgreSQL / Neo4j / MongoDB)</span>
+                </div>
+            </div>
+
+            <!-- 4. Ranking -->
+            <div class="compare-card">
+                <h3>Memory Database Ranking (By active lifecycle evolution capabilities)</h3>
+                <ul class="ranking-list">
+                    <li class="ranking-item">
+                        <span class="ranking-badge">🥇</span>
+                        <div>
+                            <strong>VecminDB</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.25rem;">Active memory management (decay, distillation, forgetting, isolation, and DP-federation).</p>
+                        </div>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="ranking-badge">🥈</span>
+                        <div>
+                            <strong>Cognee</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.25rem;">Vector-graph-relational fusion, supports Memify mechanism. However, relies heavily on external Embedding and LLM APIs.</p>
+                        </div>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="ranking-badge">🥉</span>
+                        <div>
+                            <strong>Weaviate</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.25rem;">Supports built-in inference, but has no active decay, compression, or forget gating concepts.</p>
+                        </div>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="ranking-badge">4</span>
+                        <div>
+                            <strong>RuVector</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.25rem;">GNN self-learning, tiny ecosystem, lacks consensus federation or WAL auditing.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 5. Search visibility -->
+            <div class="compare-card">
+                <h3>Why is VecminDB rarely found in public web search?</h3>
+                <p style="color: var(--text-secondary); line-height: 1.6; font-size: 0.85rem;">
+                    1. <strong>Proprietary Model (LicenseRef-VecminDB-Proprietary)</strong>: VecminDB is distributed as a commercial closed-source binary, unlike open-source competitors funded by venture capital. We prioritize IP protection, open-sourcing only the SDKs.<br>
+                    2. <strong>Memory OS Paradigm</strong>: We define VecminDB as an Agent Memory OS rather than a plain database. This category definition is pioneering, and traditional vector database list articles do not yet reflect it.<br>
+                    3. <strong>v1.0.0 Maturity</strong>: The project version is at v1.0.0. We serve air-gapped corporate intranets and military-grade applications; community-driven benchmarks are currently in building progress.
+                </p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2026 上海灵心智算智能科技有限公司. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="index.html">返回主页</a>
+                <a href="terms.html">服务条款</a>
+                <a href="privacy.html">隐私政策</a>
+                <a href="refund.html">退款政策</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
