@@ -1,6 +1,42 @@
+# Robots.txt for VecminDB (LingxinMind)
+# Enforces SEO optimization and GEO (Generative Engine Optimization) rules.
+
 User-agent: *
 Allow: /
 Disallow: /tests/
 Disallow: /api/
 
-Sitemap: https://www.lingxin-ai.com/sitemap.xml
+# Specialized routing for Generative AI Search Engine Bots (GEO)
+# Allows complete indexation of public landing page product contexts, while shielding private resources.
+User-agent: GPTBot
+Allow: /
+Disallow: /tests/
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /tests/
+Disallow: /api/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /tests/
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /tests/
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /tests/
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /tests/
+Disallow: /api/
+
+# Canonical Sitemap URL mapping
+Sitemap: https://lingxinmind.com/sitemap.xml
